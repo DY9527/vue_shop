@@ -12,28 +12,36 @@
     <el-container>
       <!-- 侧边栏 -->
       <el-aside width="200px">
-        <el-menu background-color="#333744" text-color="#fff" active-text-color="#ffd04b">
+        <el-menu
+          background-color="#333744"
+          text-color="#fff"
+          :unique-opened="true"
+          active-text-color="#3366ff"
+        >
           <!-- 一级菜单 -->
 
           <el-submenu :index="item.id +''" v-for="item in menulist" :key="item.id">
             <!-- 一级菜单的模板区域 -->
             <template slot="title">
               <!-- 图标 -->
-              <i class="el-icon-location"></i>
+              <i :class="iconsObj[item.id]"></i>
               <!-- 文本 -->
               <span>{{item.authName}}</span>
             </template>
             <!-- 二级菜单 -->
-            <el-menu-item :index="subItem.id +''"  v-for="subItem in item.children" :key="subItem.id">
+            <el-menu-item
+              :index="subItem.id +''"
+              v-for="subItem in item.children"
+              :key="subItem.id"
+            >
               <template slot="title">
                 <!-- 图标 -->
-                <i class="el-icon-location"></i>
+                <i class="el-icon-menu"></i>
                 <!-- 文本 -->
                 <span>{{subItem.authName}}</span>
               </template>
             </el-menu-item>
           </el-submenu>
-
         </el-menu>
       </el-aside>
       <!-- 右侧主体 -->
@@ -49,7 +57,14 @@ export default {
   data() {
     return {
       // 左侧菜单数据
-      menulist: []
+      menulist: [],
+      iconsObj: {
+        125: 'el-icon-user',
+        103: 'el-icon-box',
+        101: 'el-icon-goods',
+        102: 'el-icon-tickets',
+        145: 'el-icon-monitor'
+      }
     }
   },
   methods: {
@@ -91,5 +106,8 @@ export default {
 }
 .home-container {
   height: 100%;
+}
+.iconfont {
+  margin-right: 10px;
 }
 </style>
