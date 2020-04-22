@@ -20,6 +20,8 @@
           active-text-color="#3366ff"
           :collapse="isCollapse"
           :collapse-transition="false"
+          :router="true"
+          :default-active="defaultActive"
         >
           <!-- 一级菜单 -->
 
@@ -33,9 +35,10 @@
             </template>
             <!-- 二级菜单 -->
             <el-menu-item
-              :index="subItem.id +''"
+              :index="'/'+subItem.path"
               v-for="subItem in item.children"
               :key="subItem.id"
+              @click="saveNavState('/'+subItem.path)"
             >
               <template slot="title">
                 <!-- 图标 -->
@@ -48,7 +51,10 @@
         </el-menu>
       </el-aside>
       <!-- 右侧主体 -->
-      <el-main>Main</el-main>
+      <el-main>
+        <!-- 路由占位符 -->
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -56,6 +62,7 @@
 export default {
   created() {
     this.getMenuList()
+    this.defaultActive = sessionStorage.getItem('defaultActive')
   },
   data() {
     return {
@@ -68,7 +75,8 @@ export default {
         102: 'el-icon-tickets',
         145: 'el-icon-monitor'
       },
-      isCollapse: false
+      isCollapse: false,
+      defaultActive: ''
     }
   },
   methods: {
@@ -85,6 +93,11 @@ export default {
     // 点击按钮切换菜单的折叠和展开
     toggleCollapse() {
       this.isCollapse = !this.isCollapse
+    },
+    // 保存激活状态
+    saveNavState(path) {
+      sessionStorage.setItem('defaultActive', path)
+      this.defaultActive = path
     }
   }
 }
