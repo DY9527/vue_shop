@@ -8,9 +8,14 @@ import {
   Container,
   Header,
   Aside,
-  Main
+  Main,
+  Menu,
+  Submenu,
+  MenuItem
 } from 'element-ui'
-
+Vue.use(MenuItem)
+Vue.use(Submenu)
+Vue.use(Menu)
 Vue.use(Button)
 Vue.use(Form)
 Vue.use(FormItem)
