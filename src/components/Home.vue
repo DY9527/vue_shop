@@ -41,13 +41,25 @@
 </template>
 <script>
 export default {
+  created() {
+    this.getMenuList()
+  },
   data() {
-    return {}
+    return {
+      // 左侧菜单数据
+      menulist: []
+    }
   },
   methods: {
     logout() {
       window.sessionStorage.clear()
       this.$router.push('/login')
+    },
+    async getMenuList() {
+      const { data: res } = await this.$http.get('menus')
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.menulist = res.data
+      console.log(res)
     }
   }
 }
