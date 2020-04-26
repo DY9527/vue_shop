@@ -33,7 +33,7 @@
           <template v-slot="scope">
             <!-- {{scope.row}} 代表当前行的所有数据 -->
             <el-switch
-              @change="log(scope)"
+              @change="userStateChanged(scope.row)"
               v-model="scope.row.mg_state"
               active-color="#13ce66"
               inactive-color="#909399"
@@ -98,8 +98,15 @@ export default {
       this.userlist = res.data.users
       this.total = res.data.total
     },
-    log(scope) {
-      console.log(scope)
+    // 监听 switch 开关的改变
+    async userStateChanged(userinfo) {
+      const { data: res } = await this.$http.put(`users/${userinfo.id}
+      /state/${userinfo.mg_state}`)
+      if (res.meta.status !== 200) {
+        userinfo.mg_state = !userinfo.mg_state
+        return this.$message.error('更新用户状态失败')
+      }
+      this.$message.success('更新用户状态成功！')
     },
     // 监听 pagesize 改变的事件
     handleSizeChange(val) {
