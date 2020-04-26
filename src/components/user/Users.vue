@@ -36,7 +36,7 @@
               @change="log(scope)"
               v-model="scope.row.mg_state"
               active-color="#13ce66"
-              inactive-color="#ff4949"
+              inactive-color="#909399"
             ></el-switch>
           </template>
         </el-table-column>
@@ -46,7 +46,6 @@
             <el-tooltip effect="dark" content="修改用户" placement="top" :enterable="false">
               <el-button type="primary" size="mini" icon="el-icon-edit"></el-button>
             </el-tooltip>
-
             <!-- 删除 -->
             <el-tooltip effect="dark" content="删除用户" placement="top" :enterable="false">
               <el-button :value="scope.row" type="danger" size="mini" icon="el-icon-delete"></el-button>
@@ -58,6 +57,16 @@
           </template>
         </el-table-column>
       </el-table>
+      <!-- 分页区域 -->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pagenum"
+        :page-sizes="[2, 5, 10, 20]"
+        :page-size="queryInfo.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
     </el-card>
   </div>
 </template>
@@ -68,6 +77,7 @@ export default {
       // 获取用户列表的参数对象
       queryInfo: {
         query: '',
+        // 当前页数
         pagenum: 1,
         pagesize: 2
       },
@@ -90,6 +100,18 @@ export default {
     },
     log(scope) {
       console.log(scope)
+    },
+    // 监听 pagesize 改变的事件
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`)
+      this.queryInfo.pagesize = val
+      this.getUserList()
+    },
+    // 监听 页码值 改变的事件
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`)
+      this.queryInfo.pagenum = val
+      this.getUserList()
     }
   },
   created() {
