@@ -21,6 +21,43 @@
           <el-button type="primary">添加用户</el-button>
         </el-col>
       </el-row>
+
+      <!-- 用户列表区域 -->
+      <el-table :data="userlist" border stripe>
+        <el-table-column type="index" label="#"></el-table-column>
+        <el-table-column prop="username" label="姓名"></el-table-column>
+        <el-table-column prop="email" label="邮箱"></el-table-column>
+        <el-table-column prop="mobile" label="电话"></el-table-column>
+        <el-table-column prop="role_name" label="角色"></el-table-column>
+        <el-table-column label="状态">
+          <template v-slot="scope">
+            <!-- {{scope.row}} 代表当前行的所有数据 -->
+            <el-switch
+              @change="log(scope)"
+              v-model="scope.row.mg_state"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+            ></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="180px">
+          <template v-slot="scope">
+            <!-- 修改 -->
+            <el-tooltip effect="dark" content="修改用户" placement="top" :enterable="false">
+              <el-button type="primary" size="mini" icon="el-icon-edit"></el-button>
+            </el-tooltip>
+
+            <!-- 删除 -->
+            <el-tooltip effect="dark" content="删除用户" placement="top" :enterable="false">
+              <el-button :value="scope.row" type="danger" size="mini" icon="el-icon-delete"></el-button>
+            </el-tooltip>
+            <!-- 分配 -->
+            <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
+              <el-button type="warning" size="mini" icon="el-icon-setting"></el-button>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+      </el-table>
     </el-card>
   </div>
 </template>
@@ -46,8 +83,13 @@ export default {
       if (res.meta.status !== 200) {
         return this.$message.error('获取用户列表失败')
       }
+      console.log(res)
+
       this.userlist = res.data.users
       this.total = res.data.total
+    },
+    log(scope) {
+      console.log(scope)
     }
   },
   created() {

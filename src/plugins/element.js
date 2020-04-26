@@ -16,8 +16,16 @@ import {
   BreadcrumbItem,
   Card,
   Row,
-  Col
+  Col,
+  Table,
+  TableColumn,
+  Switch,
+  Tooltip
 } from 'element-ui'
+Vue.use(Switch)
+Vue.use(Tooltip)
+Vue.use(Table)
+Vue.use(TableColumn)
 Vue.use(Col)
 Vue.use(Row)
 Vue.use(Card)
@@ -30,7 +38,6 @@ Vue.use(Button)
 Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Input)
-Vue.use(Message)
 Vue.use(Container)
 Vue.use(Main)
 Vue.use(Aside)
