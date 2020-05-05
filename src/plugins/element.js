@@ -22,7 +22,8 @@ import {
   Switch,
   Tooltip,
   Pagination,
-  Dialog
+  Dialog,
+  MessageBox
 } from 'element-ui'
 Vue.use(Dialog)
 Vue.use(Pagination)
@@ -47,3 +48,4 @@ Vue.use(Main)
 Vue.use(Aside)
 Vue.use(Header)
 Vue.prototype.$message = Message
+Vue.prototype.$config = MessageBox
