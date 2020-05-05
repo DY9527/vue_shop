@@ -48,4 +48,4 @@ Vue.use(Main)
 Vue.use(Aside)
 Vue.use(Header)
 Vue.prototype.$message = Message
-Vue.prototype.$config = MessageBox
+Vue.prototype.$confirm = MessageBox.confirm

@@ -53,7 +53,13 @@
             </el-tooltip>
             <!-- 删除 -->
             <el-tooltip effect="dark" content="删除用户" placement="top" :enterable="false">
-              <el-button :value="scope.row" type="danger" size="mini" icon="el-icon-delete"></el-button>
+              <el-button
+                :value="scope.row"
+                type="danger"
+                @click="deleteUser(scope.row.id)"
+                size="mini"
+                icon="el-icon-delete"
+              ></el-button>
             </el-tooltip>
             <!-- 分配 -->
             <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
@@ -287,6 +293,27 @@ export default {
         this.queryInfo.pagenum = 1
         this.$message.success('更新成功')
       })
+    },
+    async deleteUser(id) {
+      const confirmResult = await this.$confirm(
+        '此操作将永久删除该用户, 是否继续?',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).catch(err => err)
+      if (confirmResult !== 'confirm') {
+        return this.$message.error('已取消删除！')
+      }
+      const { data: res } = await this.$http.delete('users/' + id)
+      if (res.meta.status !== 200) {
+        return this.$message.error('删除失败！')
+      }
+      this.$message.success('删除成功')
+      this.getUserList()
+      this.queryInfo.pagenum = 1
     }
   },
   created() {
