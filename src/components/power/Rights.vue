@@ -1,5 +1,5 @@
 <template>
-  <div class>
+  <div >
     <h3>权限列表组件页面</h3>
     <!-- 面包屑导航区域 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -10,7 +10,7 @@
     <!-- 卡片视图 -->
     <el-card>
       <el-table :data="rightsList" border>
-        <el-table-column type="index"></el-table-column>
+        <el-table-column label="#" type="index"></el-table-column>
         <el-table-column prop="authName" label="权限名称"></el-table-column>
         <el-table-column prop="path" label="路径"></el-table-column>
         <el-table-column prop="level" label="权限等级">
