@@ -4,7 +4,6 @@ import router from './router'
 import './plugins/element.js'
 import './assets/css/global.css'
 import axios from 'axios'
-import store from './store'
 
 Vue.prototype.$http = axios
 // 配置请求的根目录
@@ -19,6 +18,5 @@ Vue.config.productionTip = false
 
 new Vue({
   router,
-  store,
   render: h => h(App)
 }).$mount('#app')
