@@ -24,8 +24,10 @@ import {
   Pagination,
   Dialog,
   MessageBox,
-  Tag
+  Tag,
+  Tree
 } from 'element-ui'
+Vue.use(Tree)
 Vue.use(Tag)
 Vue.use(Dialog)
 Vue.use(Pagination)
