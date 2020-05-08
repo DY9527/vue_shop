@@ -386,6 +386,7 @@ export default {
     // 分配角色对话框 关闭事件
     setRoleDialogClosed() {
       this.selectRoleId = ''
+      this.userInfo = ''
     }
   },
   created() {
