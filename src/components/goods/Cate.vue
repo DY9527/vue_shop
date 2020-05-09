@@ -48,7 +48,12 @@
             @click="showEditDialog(scope.row.cat_id)"
             :value="scope.row.cat_level"
           >编辑</el-button>
-          <el-button type="danger" size="mini" icon="el-icon-delete">删除</el-button>
+          <el-button
+            type="danger"
+            size="mini"
+            @click="deleteCate(scope.row.cat_id)"
+            icon="el-icon-delete"
+          >删除</el-button>
         </template>
       </tree-table>
 
@@ -300,6 +305,27 @@ export default {
         this.queryInfo.pagenum = 1
         this.$message.success('更新成功')
       })
+    },
+    async deleteCate(id) {
+      const confirmResult = await this.$confirm(
+        '此操作将永久删除该分类, 是否继续?',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).catch(err => err)
+      if (confirmResult !== 'confirm') {
+        return this.$message.error('已取消删除！')
+      }
+      const { data: res } = await this.$http.delete('categories/' + id)
+      if (res.meta.status !== 200) {
+        return this.$message.error('删除失败！')
+      }
+      this.$message.success('删除成功')
+      this.getCateList()
+      this.queryInfo.pagenum = 1
     }
   }
 }
