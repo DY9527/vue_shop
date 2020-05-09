@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import {
+  Cascader,
   Button,
   Form,
   FormItem,
@@ -29,6 +30,7 @@ import {
   Select,
   Option
 } from 'element-ui'
+Vue.use(Cascader)
 Vue.use(Option)
 Vue.use(Select)
 Vue.use(Tree)
