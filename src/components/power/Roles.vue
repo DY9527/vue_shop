@@ -118,6 +118,23 @@
         <el-button type="primary" @click="allotRights">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 修改用户 -->
+    <el-dialog title="提示" @close="editDialogClosed" :visible.sync="editDialogVisible" width="50%">
+      <!-- 内容主题区域 -->
+      <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
+        <el-form-item label="角色名称" prop="roleName">
+          <el-input v-model="editForm.roleName"></el-input>
+        </el-form-item>
+        <el-form-item label="角色描述" prop="roleDesc">
+          <el-input v-model="editForm.roleDesc"></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- 底部区域 -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="edituserInfo">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -139,7 +156,14 @@ export default {
       },
       defKeys: [105, 116],
       // 当前即将分配权限的角色id
-      roleId: ''
+      roleId: '',
+      editDialogVisible: false,
+
+      editForm: {},
+      editFormRules: {
+        email: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
+        mobile: [{ required: true, message: '请输入角色描述', trigger: 'blur' }]
+      }
     }
   },
   methods: {
@@ -220,9 +244,33 @@ export default {
       this.$message.success('分配成功！')
       this.getRolesList()
       this.setRightDialogVisib = false
+    },
+    async showEditDialog(id) {
+      this.roleId = id
+      const { data: res } = await this.$http.get('roles/' + id)
+      if (res.meta.status !== 200) return this.$message.error('错误')
+      this.editForm = res.data
+      this.editDialogVisible = true
+    },
+    editDialogClosed() {
+      this.$refs.editFormRef.resetFields()
+    },
+    edituserInfo() {
+      this.$refs.editFormRef.validate(async valid => {
+        if (!valid) return
+        const { data: res } = await this.$http.put('roles/' + this.roleId, {
+          roleName: this.editForm.roleName,
+          roleDesc: this.editForm.roleDesc
+        })
+        if (res.meta.status !== 200) {
+          return this.$message.error('更新失败！,' + res.meta.msg)
+        }
+        this.editDialogVisible = false
+        this.getRolesList()
+        this.$message.success('更新成功')
+      })
     }
   },
-
   created() {
     this.getRolesList()
   }
