@@ -12,7 +12,7 @@
     <el-card>
       <el-row>
         <el-col>
-          <el-button type="primary">添加角色</el-button>
+          <el-button type="primary" @click="addRoleDialogVisible=true">添加角色</el-button>
         </el-col>
       </el-row>
       <el-table :data="rolesList" border>
@@ -117,8 +117,8 @@
         <el-button type="primary" @click="allotRights">确 定</el-button>
       </span>
     </el-dialog>
-    <!-- 修改用户 -->
-    <el-dialog title="提示" @close="editDialogClosed" :visible.sync="editDialogVisible" width="50%">
+    <!-- 修改角色 -->
+    <el-dialog title="修改角色" @close="editDialogClosed" :visible.sync="editDialogVisible" width="50%">
       <!-- 内容主题区域 -->
       <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
         <el-form-item label="角色名称" prop="roleName">
@@ -134,6 +134,28 @@
         <el-button type="primary" @click="edituserInfo">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 添加角色的对话框 -->
+    <el-dialog
+      title="添加角色"
+      :visible.sync="addRoleDialogVisible"
+      width="50%"
+      @close="addRoleDialogClosed"
+    >
+      <!-- 内容主题区域 -->
+      <el-form :model="addRoleForm" :rules="addRoleFormRules" ref="addRoleFormRef" label-width="70px">
+        <el-form-item label="角色名称" prop="roleName">
+          <el-input v-model="addRoleForm.roleName"></el-input>
+        </el-form-item>
+        <el-form-item label="角色描述" prop="roleDesc">
+          <el-input v-model="addRoleForm.roleDesc"></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- 底部区域 -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addRoleDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addRole">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -142,6 +164,19 @@ export default {
   components: {},
   data() {
     return {
+      addRoleDialogVisible: false,
+      addRoleForm: {
+        roleName: '',
+        roleDesc: ''
+      },
+      addRoleFormRules: {
+        roleName: [
+          { required: true, message: '请输入角色名称', trigger: 'blur' }
+        ],
+        roleDesc: [
+          { required: true, message: '请输入角色描述', trigger: 'blur' }
+        ]
+      },
       // 所有角色列表数据
       rolesList: [],
       //   控制分配权限对话框的显示
@@ -175,6 +210,22 @@ export default {
       console.log(res)
 
       console.log(this.rightsList)
+    },
+    addRoleDialogClosed() {
+      this.$refs.addRoleFormRef.resetFields()
+    },
+    addRole() {
+      this.$refs.addRoleFormRef.validate(async valid => {
+        if (!valid) return
+        // 可以发起添加角色的网络请求
+        const { data: res } = await this.$http.post('roles', this.addRoleForm)
+        if (res.meta.status !== 201) {
+          this.$message.error('添加角色失败')
+        }
+        this.$message.success('添加角色成功')
+        this.addRoleDialogVisible = false
+        this.getRolesList()
+      })
     },
     async removeRightById(role, rightId) {
       const confirmResult = await this.$confirm(
