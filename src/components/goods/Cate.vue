@@ -41,7 +41,13 @@
         </template>
         <!-- 操作 -->
         <template slot="opt" slot-scope="scope">
-          <el-button type="primary" size="mini" icon="el-icon-edit" :value="scope.row.cat_level">编辑</el-button>
+          <el-button
+            type="primary"
+            size="mini"
+            icon="el-icon-edit"
+            @click="showEditDialog(scope.row.cat_id)"
+            :value="scope.row.cat_level"
+          >编辑</el-button>
           <el-button type="danger" size="mini" icon="el-icon-delete">删除</el-button>
         </template>
       </tree-table>
@@ -89,6 +95,20 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="addCateDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="addCate">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 修改分类 -->
+    <el-dialog title="修改分类" @close="editDialogClosed" :visible.sync="editDialogVisible" width="50%">
+      <!-- 内容主题区域 -->
+      <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
+        <el-form-item label="分类名" prop="cat_name">
+          <el-input v-model="editForm.cat_name"></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- 底部区域 -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="edituserInfo">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -160,7 +180,12 @@ export default {
         checkStrictly: true
       },
       // 选中的父级分类的ID数组
-      selectedKeys: []
+      selectedKeys: [],
+      editDialogVisible: false,
+      editForm: {},
+      editFormRules: {
+        cat_name: [{ required: true, message: '请输入名称', trigger: 'blur' }]
+      }
     }
   },
   created() {
@@ -250,6 +275,31 @@ export default {
       this.selectedKeys = []
       this.addCateForm.cat_level = 0
       this.addCateForm.cat_pid = 0
+    },
+    async showEditDialog(id) {
+      const { data: res } = await this.$http.get('categories/' + id)
+      if (res.meta.status !== 200) return this.$message.error('错误')
+      this.editForm = res.data
+      this.editDialogVisible = true
+    },
+    editDialogClosed() {
+      this.$refs.editFormRef.resetFields()
+    },
+    edituserInfo() {
+      this.$refs.editFormRef.validate(async valid => {
+        if (!valid) return
+        const { data: res } = await this.$http.put(
+          'categories/' + this.editForm.cat_id,
+          { cat_name: this.editForm.cat_name }
+        )
+        if (res.meta.status !== 200) {
+          return this.$message.error('更新失败！')
+        }
+        this.editDialogVisible = false
+        this.getCateList()
+        this.queryInfo.pagenum = 1
+        this.$message.success('更新成功')
+      })
     }
   }
 }

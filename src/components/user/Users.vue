@@ -108,7 +108,7 @@
       </span>
     </el-dialog>
     <!-- 修改用户 -->
-    <el-dialog title="提示" @close="editDialogClosed" :visible.sync="editDialogVisible" width="50%">
+    <el-dialog title="修改用户" @close="editDialogClosed" :visible.sync="editDialogVisible" width="50%">
       <!-- 内容主题区域 -->
       <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
         <el-form-item label="用户名" prop="username">
