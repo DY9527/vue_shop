@@ -60,6 +60,7 @@
         <el-table-column label="#" type="index"></el-table-column>
         <el-table-column prop="roleName" label="角色名称"></el-table-column>
         <el-table-column prop="roleDesc" label="角色描述"></el-table-column>
+        <el-table-column prop="roleNum" label="所持权限数"></el-table-column>
         <el-table-column label="操作" width="300px">
           <template v-slot="scope">
             <!-- 修改 -->
@@ -200,8 +201,12 @@ export default {
 
       editForm: {},
       editFormRules: {
-        roleName: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
-        roleDesc: [{ required: true, message: '请输入角色描述', trigger: 'blur' }]
+        roleName: [
+          { required: true, message: '请输入角色名称', trigger: 'blur' }
+        ],
+        roleDesc: [
+          { required: true, message: '请输入角色描述', trigger: 'blur' }
+        ]
       }
     }
   },
@@ -213,7 +218,18 @@ export default {
       }
       this.rolesList = res.data
       console.log(res)
-
+      this.rolesList.forEach(it => {
+        let sum = 0
+        let sum2 = 0
+        it.children.forEach(it2 => {
+          sum += it2.children.length
+          it.children.forEach(it3 => {
+            sum2 += it3.children.length
+          })
+        })
+        // 持有权限数
+        it.roleNum = '(' + it.children.length + ',' + sum + ',' + sum2 + ')'
+      })
       console.log(this.rightsList)
     },
     addRoleDialogClosed() {
@@ -263,7 +279,7 @@ export default {
       }
       //   把获取到的权限数据保存到 rightslist 中
       this.rightslist = res.data
-      console.log(this.rightsList)
+      console.log(res)
       // 递归获取三级节点的id
       this.getLeafKeys(role, this.defKeys)
       this.setRightDialogVisib = true
