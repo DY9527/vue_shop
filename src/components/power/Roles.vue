@@ -25,7 +25,7 @@
             >
               <!-- 一级权限 -->
               <el-col :span="5">
-                <el-tag closable @close="removeRightById(scope.row,item2.id)">{{item1.authName}}</el-tag>
+                <el-tag closable @close="removeRightById(scope.row,item1.id)">{{item1.authName}}</el-tag>
                 <i class="el-icon-caret-right"></i>
               </el-col>
               <!-- 二级、三级权限 -->
@@ -142,7 +142,12 @@
       @close="addRoleDialogClosed"
     >
       <!-- 内容主题区域 -->
-      <el-form :model="addRoleForm" :rules="addRoleFormRules" ref="addRoleFormRef" label-width="70px">
+      <el-form
+        :model="addRoleForm"
+        :rules="addRoleFormRules"
+        ref="addRoleFormRef"
+        label-width="70px"
+      >
         <el-form-item label="角色名称" prop="roleName">
           <el-input v-model="addRoleForm.roleName"></el-input>
         </el-form-item>
@@ -188,7 +193,7 @@ export default {
         children: 'children',
         label: 'authName'
       },
-      defKeys: [105, 116],
+      defKeys: [],
       // 当前即将分配权限的角色id
       roleId: '',
       editDialogVisible: false,
