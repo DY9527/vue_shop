@@ -28,7 +28,12 @@
       <el-tabs v-model="activeName" @tab-click="handleTabClick">
         <el-tab-pane label="动态参数" name="many">
           <!-- 添加参数的按钮 -->
-          <el-button type="primary" size="mini" :disabled="isBtnDisabled">添加参数</el-button>
+          <el-button
+            type="primary"
+            @click="addDialogVisible=true"
+            size="mini"
+            :disabled="isBtnDisabled"
+          >添加参数</el-button>
           <!-- 动态参数列表 -->
           <el-table :data="manyTableData" border stripe>
             <!-- 展开行 -->
@@ -46,7 +51,12 @@
         </el-tab-pane>
         <el-tab-pane label="静态属性" name="only">
           <!-- 添加属性的按钮 -->
-          <el-button type="primary" size="mini" :disabled="isBtnDisabled">添加属性</el-button>
+          <el-button
+            type="primary"
+            @click="addDialogVisible=true"
+            size="mini"
+            :disabled="isBtnDisabled"
+          >添加属性</el-button>
           <!-- 静态参数列表 -->
           <el-table :data="onlyTableData" border stripe>
             <!-- 展开行 -->
@@ -64,6 +74,25 @@
         </el-tab-pane>
       </el-tabs>
     </el-card>
+    <!-- 添加参数的对话框 -->
+    <el-dialog
+      :title="'添加'+titleText"
+      :visible.sync="addDialogVisible"
+      width="50%"
+      @close="addDialogClosed"
+    >
+      <!-- 内容主题区域 -->
+      <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
+        <el-form-item :label="titleText" prop="attr_name">
+          <el-input v-model="addForm.attr_name"></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- 底部区域 -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addDialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -85,7 +114,23 @@ export default {
       // 动态参数
       manyTableData: [],
       // 静态参数
-      onlyTableData: []
+      onlyTableData: [],
+      // 添加对话框
+      addDialogVisible: false,
+      // 添加参数的表单数据对象
+      addForm: {
+        attr_name: ''
+      },
+      // 添加表单的验证规则
+      addFormRules: {
+        attr_name: [
+          {
+            required: true,
+            message: '请输入参数名称',
+            trigger: 'blur'
+          }
+        ]
+      }
     }
   },
   methods: {
@@ -123,6 +168,10 @@ export default {
       }
       if (this.activeName === 'many') this.manyTableData = res.data
       else this.onlyTableData = res.data
+    },
+    // 监听添加参数对话框的关闭事件
+    addDialogClosed() {
+      this.$refs.addFormRef.resetFields()
     }
   },
   created() {
@@ -138,6 +187,10 @@ export default {
     cateId() {
       if (this.selectedCateKeys.length === 3) return this.selectedCateKeys[2]
       return null
+    },
+    titleText() {
+      if (this.activeName === 'many') return '动态参数'
+      else return '静态属性'
     }
   }
 }

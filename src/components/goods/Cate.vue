@@ -77,7 +77,7 @@
     >
       <!-- 内容主题区域 -->
       <el-form
-        label-width="70px"
+        label-width="100px"
         :model="addCateForm"
         ref="addCateFormRef"
         :rules="addCateFormRules"
@@ -105,7 +105,7 @@
     <!-- 修改分类 -->
     <el-dialog title="修改分类" @close="editDialogClosed" :visible.sync="editDialogVisible" width="50%">
       <!-- 内容主题区域 -->
-      <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
+      <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="100px">
         <el-form-item label="分类名" prop="cat_name">
           <el-input v-model="editForm.cat_name"></el-input>
         </el-form-item>
