@@ -29,10 +29,38 @@
         <el-tab-pane label="动态参数" name="many">
           <!-- 添加参数的按钮 -->
           <el-button type="primary" size="mini" :disabled="isBtnDisabled">添加参数</el-button>
+          <!-- 动态参数列表 -->
+          <el-table :data="manyTableData" border stripe>
+            <!-- 展开行 -->
+            <el-table-column type="expand"></el-table-column>
+            <!-- 索引列 -->
+            <el-table-column type="index"></el-table-column>
+            <el-table-column label="参数名称" prop="attr_name"></el-table-column>
+            <el-table-column label="操作">
+              <template>
+                <el-button type="primary" size="mini" icon="el-icon-search">搜索</el-button>
+                <el-button type="danger" size="mini" icon="el-icon-delete">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-tab-pane>
         <el-tab-pane label="静态属性" name="only">
           <!-- 添加属性的按钮 -->
           <el-button type="primary" size="mini" :disabled="isBtnDisabled">添加属性</el-button>
+          <!-- 静态参数列表 -->
+          <el-table :data="onlyTableData" border stripe>
+            <!-- 展开行 -->
+            <el-table-column type="expand"></el-table-column>
+            <!-- 索引列 -->
+            <el-table-column type="index"></el-table-column>
+            <el-table-column label="参数名称" prop="attr_name"></el-table-column>
+            <el-table-column label="操作">
+              <template>
+                <el-button type="primary" size="mini" icon="el-icon-search">搜索</el-button>
+                <el-button type="danger" size="mini" icon="el-icon-delete">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-tab-pane>
       </el-tabs>
     </el-card>
@@ -53,7 +81,11 @@ export default {
       },
       selectedCateKeys: [],
       //   被激活的标签页
-      activeName: 'many'
+      activeName: 'many',
+      // 动态参数
+      manyTableData: [],
+      // 静态参数
+      onlyTableData: []
     }
   },
   methods: {
@@ -67,20 +99,30 @@ export default {
     async handleCange() {
       console.log(this.selectedCateKeys)
       //   只允许选中三级
-      if (this.selectedCateKeys.length !== 3) {
-        this.selectedCateKeys = []
-        return null
-      }
-      const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes`, {
-        params: { sel: this.activeName }
-      })
-      if (res.meta.status !== 200) {
-        return this.$message.error('获取参数列表失败')
-      }
+      this.getParamsData()
     },
     // tab 页签点击事件
     handleTabClick() {
       console.log(this.activeName)
+      this.getParamsData()
+    },
+    // 获取参数的列表数据
+    async getParamsData() {
+      if (this.selectedCateKeys.length !== 3) {
+        this.selectedCateKeys = []
+        return null
+      }
+      const { data: res } = await this.$http.get(
+        `categories/${this.cateId}/attributes`,
+        {
+          params: { sel: this.activeName }
+        }
+      )
+      if (res.meta.status !== 200) {
+        return this.$message.error('获取参数列表失败')
+      }
+      if (this.activeName === 'many') this.manyTableData = res.data
+      else this.onlyTableData = res.data
     }
   },
   created() {
