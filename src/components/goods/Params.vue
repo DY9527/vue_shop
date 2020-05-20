@@ -49,7 +49,12 @@
                   @click="showEditDialog(scope.row.attr_id)"
                   icon="el-icon-edit"
                 >修改</el-button>
-                <el-button type="danger" size="mini" icon="el-icon-delete">删除</el-button>
+                <el-button
+                  @click="removeParams(scope.row.attr_id)"
+                  type="danger"
+                  size="mini"
+                  icon="el-icon-delete"
+                >删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -77,7 +82,12 @@
                   @click="showEditDialog(scope.row.attr_id)"
                   icon="el-icon-edit"
                 >修改</el-button>
-                <el-button type="danger" size="mini" icon="el-icon-delete">删除</el-button>
+                <el-button
+                  type="danger"
+                  @click="removeParams(scope.row.attr_id)"
+                  size="mini"
+                  icon="el-icon-delete"
+                >删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -277,6 +287,26 @@ export default {
         this.editDialogVisible = false
         this.getParamsData()
       })
+    },
+    async removeParams(id) {
+      const confirmResult = await this.$confirm(
+        '此操作将永久删除该分类, 是否继续?',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).catch(err => err)
+      if (confirmResult !== 'confirm') {
+        return this.$message.error('已取消删除！')
+      }
+      const { data: res } = await this.$http.delete(`categories/${this.cateId}/attributes/${id}`)
+      if (res.meta.status !== 200) {
+        return this.$message.error('删除失败！')
+      }
+      this.$message.success('删除成功')
+      this.getParamsData()
     }
   },
   created() {
