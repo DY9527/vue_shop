@@ -1,4 +1,5 @@
 import Vue from 'vue'
+// import _ from 'lodash'
 import {
   Cascader,
   Button,
@@ -65,3 +66,4 @@ Vue.use(Aside)
 Vue.use(Header)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
+// Vue.prototype._ = _

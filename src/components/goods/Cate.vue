@@ -11,6 +11,7 @@
       <el-row>
         <el-col>
           <el-button type="primary" @click="showAddCateDialog">添加分类</el-button>
+          <el-button type="primary" @click="yc3j">隐藏3级</el-button>
         </el-col>
       </el-row>
       <tree-table
@@ -326,6 +327,15 @@ export default {
       this.$message.success('删除成功')
       this.getCateList()
       this.queryInfo.pagenum = 1
+    },
+    yc3j() {
+      this.catelist.forEach(val => {
+        val.children.forEach(val2 => {
+          val2.childrenBack = val2.children
+          val2.children = null
+        })
+      })
+      console.log(this.catelist)
     }
   }
 }
