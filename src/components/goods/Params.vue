@@ -41,12 +41,12 @@
             <!-- 索引列 -->
             <el-table-column type="index"></el-table-column>
             <el-table-column label="参数名称" prop="attr_name"></el-table-column>
-            <el-table-column label="操作">
+            <el-table-column v-slot="scope" label="操作">
               <template>
                 <el-button
                   type="primary"
                   size="mini"
-                  @click="showEditDialog(scoped.row.attr_id)"
+                  @click="showEditDialog(scope.row.attr_id)"
                   icon="el-icon-edit"
                 >修改</el-button>
                 <el-button type="danger" size="mini" icon="el-icon-delete">删除</el-button>
@@ -70,11 +70,11 @@
             <el-table-column type="index"></el-table-column>
             <el-table-column label="参数名称" prop="attr_name"></el-table-column>
             <el-table-column label="操作">
-              <template>
+              <template v-slot="scope">
                 <el-button
                   type="primary"
                   size="mini"
-                  @click="showEditDialog(scoped.row.attr_id)"
+                  @click="showEditDialog(scope.row.attr_id)"
                   icon="el-icon-edit"
                 >修改</el-button>
                 <el-button type="danger" size="mini" icon="el-icon-delete">删除</el-button>
@@ -216,6 +216,10 @@ export default {
     addDialogClosed() {
       this.$refs.addFormRef.resetFields()
     },
+
+    editDialogClosed() {
+      this.$refs.editFormRef.resetFields()
+    },
     // 添加参数
     addParams() {
       this.$refs.addFormRef.validate(async valid => {
@@ -236,27 +240,38 @@ export default {
       })
     },
     // 展示修改的对话框
-    showEditDialog(id) {
-      this.$http.get(`categories/${this.cateId}/attributes`)
+    async showEditDialog(id) {
+      const { data: res } = await this.$http.get(
+        `categories/${this.cateId}/attributes/${id}`,
+        {
+          params: { attr_sel: this.activeName }
+        }
+      )
+      if (res.meta.status !== 200) {
+        return this.$message.error('获取参数信息失败！')
+      }
+      this.editForm = res.data
       this.editDialogVisible = true
     },
     // 重置修改表单
     editialogClosed() {
       this.$refs.editFormRef.resetFields()
     },
-    // 添加参数
+    // 修改参数
     editParams() {
+      console.log(this.editForm)
+
       this.$refs.editFormRef.validate(async valid => {
         if (!valid) return null
-        const { data: res } = await this.$http.post(
-          `categories/${this.cateId}/attributes`,
+        const { data: res } = await this.$http.put(
+          `categories/${this.cateId}/attributes/${this.editForm.attr_id}`,
           {
             attr_name: this.editForm.attr_name,
             attr_sel: this.activeName
           }
         )
-        if (res.meta.status !== 201) {
-          return this.$message.error('修改失败！')
+        if (res.meta.status !== 200) {
+          return this.$message.error('修改参数失败！')
         }
         this.$message.success('修改成功')
         this.editDialogVisible = false
