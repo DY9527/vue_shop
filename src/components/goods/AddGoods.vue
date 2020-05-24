@@ -86,14 +86,24 @@
               <el-button size="small" type="primary">点击上传</el-button>
             </el-upload>
           </el-tab-pane>
-          <el-tab-pane label="商品内容" name="4">商品内容</el-tab-pane>
+          <el-tab-pane label="商品内容" name="4">
+            <!-- 富文本编辑组件 -->
+            <quill-editor v-model="addForm.goods_introduce"></quill-editor>
+            <el-button type="primary" @click="add" class="btnAdd">添加商品</el-button>
+          </el-tab-pane>
         </el-tabs>
       </el-form>
     </el-card>
+
+    <!-- 图片预览 -->
+    <el-dialog title="图片预览" :visible.sync="PreviewDialogVisible" width="50%">
+      <img :src="previewPath" alt="🤮" class="previewImg" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import _ from 'lodash'
 export default {
   data() {
     return {
@@ -108,7 +118,9 @@ export default {
         goods_number: 0,
         goods_weight: 0,
         // 图片的数组
-        pics: []
+        pics: [],
+        goods_introduce: '',
+        attrs: []
       },
       //   添加表单的校验规则
       addFormRules: {
@@ -144,7 +156,9 @@ export default {
       // token
       headerObj: {
         Authorization: window.sessionStorage.getItem('token')
-      }
+      },
+      previewPath: '',
+      PreviewDialogVisible: false
     }
   },
   methods: {
@@ -222,11 +236,49 @@ export default {
       this.addForm.pics.splice(i, 1)
     },
     // 处理预览图片的效果
-    handlePreview() {},
+    handlePreview(file) {
+      this.previewPath = file.response.data.url
+      this.PreviewDialogVisible = true
+    },
     handleSuccess(response) {
       const picInfo = { pic: response.data.tmp_path }
       this.addForm.pics.push(picInfo)
       console.log(this.addForm)
+    },
+    // 添加商品
+    add() {
+      // console.log(this.addForm)
+      this.$refs.addFormRef.validate(async valid => {
+        if (!valid) return this.$message.error('请填写必要的表单项')
+        const form = _.cloneDeep(this.addForm)
+        form.goods_cat = form.goods_cat.join(',')
+        this.manyTableData.forEach(item => {
+          const newInfo = {
+            attr_id: item.attr_id,
+            attr_value: item.attr_vals.join(' ')
+          }
+          this.addForm.attrs.push(newInfo)
+        })
+        form.attrs = this.addForm.attrs
+        this.onlyTableData.forEach(item => {
+          const newInfo = {
+            attr_id: item.attr_id,
+            attr_value: item.attr_vals
+          }
+          this.addForm.attrs.push(newInfo)
+        })
+
+        form.attrs = this.addForm.attrs
+        console.log(form)
+        const { data: res } = await this.$http.post('goods', form)
+        console.log(res.data)
+
+        if (res.meta.status !== 201) {
+          return this.$message.error('添加商品失败')
+        }
+        this.$message.success('添加成功')
+        this.$router.push('/goods')
+      })
     }
   },
   created() {
@@ -246,5 +298,12 @@ export default {
 <style lang="less" scoped>
 .el-checkbox {
   margin: 0 5px 0 0 !important;
+}
+
+.previewImg {
+  width: 100%;
+}
+.btnAdd {
+  margin-top: 15px;
 }
 </style>>
