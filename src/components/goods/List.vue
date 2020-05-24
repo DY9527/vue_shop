@@ -10,12 +10,12 @@
     <el-card>
       <el-row>
         <el-col :span="8">
-          <el-input placeholder="请输入内容">
-            <el-button slot="append" icon="el-icon-search"></el-button>
+          <el-input placeholder="请输入内容" v-model="queryInfo.query">
+            <el-button slot="append" icon="el-icon-search" @click="getGoodsList"></el-button>
           </el-input>
         </el-col>
         <el-col :span="4">
-          <el-button type="primary">添加商品</el-button>
+          <el-button type="primary" @click="GoToAddGoods">添加商品</el-button>
         </el-col>
       </el-row>
       <!-- 商品列表区域 -->
@@ -42,7 +42,12 @@
             </el-tooltip>
             <!-- 删除 -->
             <el-tooltip effect="dark" content="删除商品" placement="top" :enterable="false">
-              <el-button :value="scope.row" type="danger" size="mini" icon="el-icon-delete"></el-button>
+              <el-button
+                @click="RemoveById(scope.row.goods_id)"
+                type="danger"
+                size="mini"
+                icon="el-icon-delete"
+              ></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -52,12 +57,13 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="queryInfo.pagenum"
-        :page-sizes="[2, 5, 10, 20]"
+        :page-sizes="[5, 10, 20, 50]"
         :page-size="queryInfo.pagesize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
       ></el-pagination>
     </el-card>
+
   </div>
 </template>
 
@@ -101,6 +107,30 @@ export default {
       console.log(`当前页: ${val}`)
       this.queryInfo.pagenum = val
       this.getGoodsList()
+    },
+    async RemoveById(id) {
+      const confirmResult = await this.$confirm(
+        '此操作将永久删除该商品, 是否继续?',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).catch(err => err)
+      if (confirmResult !== 'confirm') {
+        return this.$message.error('已取消删除！')
+      }
+      const { data: res } = await this.$http.delete('goods/' + id)
+      if (res.meta.status !== 200) {
+        return this.$message.error('删除失败！')
+      }
+      this.$message.success('删除成功')
+      this.getGoodsList()
+      this.queryInfo.pagenum = 1
+    },
+    GoToAddGoods() {
+      this.$router.push('goods/add')
     }
   }
 }

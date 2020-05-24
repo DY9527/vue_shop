@@ -1,4 +1,5 @@
 import Vue from 'vue'
+
 // import _ from 'lodash'
 import {
   Cascader,
@@ -32,8 +33,12 @@ import {
   Option,
   Alert,
   TabPane,
-  Tabs
+  Tabs,
+  Steps,
+  Step
 } from 'element-ui'
+Vue.use(Step)
+Vue.use(Steps)
 Vue.use(Alert)
 Vue.use(TabPane)
 Vue.use(Tabs)

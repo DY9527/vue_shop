@@ -9,6 +9,7 @@ import Users from '../components/user/Users.vue'
 import Cate from '../components/goods/Cate.vue'
 import Params from '../components/goods/Params.vue'
 import List from '../components/goods/List.vue'
+import AddGoods from '../components/goods/AddGoods.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -52,6 +53,10 @@ const routes = [
       {
         path: '/goods',
         component: List
+      },
+      {
+        path: '/goods/add',
+        component: AddGoods
       }
     ]
   }
