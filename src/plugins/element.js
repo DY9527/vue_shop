@@ -35,9 +35,16 @@ import {
   TabPane,
   Tabs,
   Steps,
-  Step
+  Step,
+  Checkbox,
+  CheckboxGroup,
+  Upload
 } from 'element-ui'
+
+Vue.use(Upload)
+Vue.use(CheckboxGroup)
 Vue.use(Step)
+Vue.use(Checkbox)
 Vue.use(Steps)
 Vue.use(Alert)
 Vue.use(TabPane)
