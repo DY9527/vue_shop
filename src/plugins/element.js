@@ -1,6 +1,5 @@
 import Vue from 'vue'
-import TimeLine from './timeline/index.js'
-import TimeLineItem from './timeline-item/index.js'
+
 import {
   Cascader,
   Button,
@@ -38,7 +37,9 @@ import {
   Step,
   Checkbox,
   CheckboxGroup,
-  Upload
+  Upload,
+  Timeline,
+  TimelineItem
 } from 'element-ui'
 
 Vue.use(Upload)
@@ -78,7 +79,6 @@ Vue.use(Aside)
 Vue.use(Header)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
-
+Vue.use(Timeline)
+Vue.use(TimelineItem)
 // Vue.prototype._ = _
-Vue.use(TimeLine)
-Vue.use(TimeLineItem)
