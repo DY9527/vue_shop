@@ -1,5 +1,6 @@
 import Vue from 'vue'
-
+import TimeLine from './timeline/index.js'
+import TimeLineItem from './timeline-item/index.js'
 import {
   Cascader,
   Button,
@@ -79,3 +80,5 @@ Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
 
 // Vue.prototype._ = _
+Vue.use(TimeLine)
+Vue.use(TimeLineItem)
