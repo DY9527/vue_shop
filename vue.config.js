@@ -1,12 +1,12 @@
 module.exports = {
-  // 自定义打包路径
   chainWebpack: config => {
-    //   发布模式
+    // 发布模式
     config.when(process.env.NODE_ENV === 'production', config => {
       config
         .entry('app')
         .clear()
         .add('./src/main-prod.js')
+
       config.set('externals', {
         vue: 'Vue',
         'vue-router': 'VueRouter',
@@ -22,16 +22,18 @@ module.exports = {
         return args
       })
     })
+
     // 开发模式
     config.when(process.env.NODE_ENV === 'development', config => {
       config
         .entry('app')
         .clear()
         .add('./src/main-dev.js')
-    })
-    config.plugin('html').tap(args => {
-      args[0].isProd = false
-      return args
+
+      config.plugin('html').tap(args => {
+        args[0].isProd = false
+        return args
+      })
     })
   }
 }
