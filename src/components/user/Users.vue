@@ -182,8 +182,8 @@ export default {
         pagenum: 1,
         pagesize: 10
       },
-      userlist: [],
       total: 0,
+      userlist: [],
       //  控制添加用户对话框的显示与隐藏
       addDialogVisible: false,
       addForm: {
@@ -255,7 +255,7 @@ export default {
     }
   },
   methods: {
-    async getUserList() {
+    async getUserList(pagenum) {
       const { data: res } = await this.$http.get('users', {
         params: this.queryInfo
       })
@@ -266,7 +266,7 @@ export default {
 
       this.userlist = res.data.users
       this.total = res.data.total
-      this.queryInfo.pagenum = 1
+      this.queryInfo.pagenum = pagenum
     },
     // 监听 switch 开关的改变
     async userStateChanged(userinfo) {
@@ -288,7 +288,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.queryInfo.pagenum = val
-      this.getUserList()
+      this.getUserList(val)
     },
     addDialogClosed() {
       this.$refs.addFormRef.resetFields()
@@ -303,8 +303,7 @@ export default {
         }
         this.$message.success('添加用户成功')
         this.addDialogVisible = false
-        this.getUserList()
-        this.queryInfo.pagenum = 1
+        this.getUserList(1)
       })
     },
     async showEditDialog(id) {
@@ -380,8 +379,7 @@ export default {
       }
       this.$message.success('更新成功')
       this.setRoleDialogVisib = false
-      this.getUserList()
-      this.queryInfo.pagenum = 1
+      this.getUserList(1)
     },
     // 分配角色对话框 关闭事件
     setRoleDialogClosed() {
@@ -390,7 +388,7 @@ export default {
     }
   },
   created() {
-    this.getUserList()
+    this.getUserList(1)
   }
 }
 </script>
