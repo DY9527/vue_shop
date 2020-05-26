@@ -15,7 +15,7 @@
           <el-button type="primary" @click="addRoleDialogVisible=true">添加角色</el-button>
         </el-col>
       </el-row>
-      <el-table :data="rolesList" border>
+      <el-table :data="rolesList" :row-key="id" border>
         <el-table-column type="expand">
           <template v-slot="scope">
             <el-row
