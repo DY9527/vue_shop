@@ -41,11 +41,17 @@ const Params = () =>
 
 // import List from '../components/goods/List.vue'
 const List = () =>
-  import(/* webpackChunkName:"List_AddGoods" */ '../components/goods/List.vue')
+  import(
+    /* webpackChunkName:"List_AddGoods_EditGoods" */ '../components/goods/List.vue'
+  )
 // import AddGoods from '../components/goods/AddGoods.vue'
 const AddGoods = () =>
   import(
-    /* webpackChunkName:"List_AddGoods" */ '../components/goods/AddGoods.vue'
+    /* webpackChunkName:"List_AddGoods_EditGoods" */ '../components/goods/AddGoods.vue'
+  )
+const EditGoods = () =>
+  import(
+    /* webpackChunkName:"List_AddGoods_EditGoods" */ '../components/goods/EditGoods.vue'
   )
 
 // import Order from '../components/order/Order.vue'
@@ -104,6 +110,10 @@ const routes = [
       {
         path: '/goods/add',
         component: AddGoods
+      },
+      {
+        path: '/goods/edit',
+        component: EditGoods
       },
       {
         path: '/orders',
