@@ -303,7 +303,6 @@ export default {
         }
         this.editDialogVisible = false
         this.getCateList()
-        this.queryInfo.pagenum = 1
         this.$message.success('更新成功')
       })
     },

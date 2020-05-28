@@ -330,7 +330,6 @@ export default {
         }
         this.editDialogVisible = false
         this.getUserList()
-        this.queryInfo.pagenum = 1
         this.$message.success('更新成功')
       })
     },
@@ -353,7 +352,6 @@ export default {
       }
       this.$message.success('删除成功')
       this.getUserList()
-      this.queryInfo.pagenum = 1
     },
     async setRole(userInfo) {
       this.userInfo = userInfo
