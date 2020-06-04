@@ -1,12 +1,12 @@
 <template>
   <div>
     <!-- 面包屑导航区域 -->
-     <Breadcrumb :data="['用户管理','用户列表']"></Breadcrumb>
-    <!-- <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-      <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-    </el-breadcrumb> -->
+     <brea :data="['用户管理','用户列表']"></brea>
+    <!-- <el-brea separator-class="el-icon-arrow-right">
+      <el-brea-item :to="{ path: '/home' }">首页</el-brea-item>
+      <el-brea-item>用户管理</el-brea-item>
+      <el-brea-item>用户列表</el-brea-item>
+    </el-brea> -->
 
     <!-- 卡片视图 -->
     <el-card class="box-card">
@@ -159,11 +159,7 @@
   </div>
 </template>
 <script>
-import Breadcrumb from '../breadcrumb'
 export default {
-  components: {
-    Breadcrumb
-  },
   data() {
     var checkEmail = (rule, value, cb) => {
       const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-
+import Brea from '../components/breadcrumb.vue'
 import {
   Cascader,
   Button,
@@ -41,7 +41,7 @@ import {
   Timeline,
   TimelineItem
 } from 'element-ui'
-
+Vue.component('brea', Brea)
 Vue.use(Upload)
 Vue.use(CheckboxGroup)
 Vue.use(Step)

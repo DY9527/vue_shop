@@ -1,7 +1,7 @@
 <template>
   <div >
     <h3>权限列表组件页面</h3>
-     <Breadcrumb :data="['权限管理','权限列表']"></Breadcrumb>
+     <brea :data="['权限管理','权限列表']"></brea>
     <!-- 面包屑导航区域 -->
 
     <!-- 卡片视图 -->
@@ -24,11 +24,9 @@
 </template>
 
 <script>
-import Breadcrumb from '../breadcrumb'
+
 export default {
-  components: {
-    Breadcrumb
-  },
+
   data() {
     // 这里存放数据
     return {

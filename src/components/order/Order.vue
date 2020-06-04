@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 面包屑导航区域 -->
-    <Breadcrumb :data="['订单管理','订单列表']"></Breadcrumb>
+    <brea :data="['订单管理','订单列表']"></brea>
 
     <!-- 卡片视图 -->
     <el-card class="box-card">
@@ -106,11 +106,9 @@
 
 <script>
 import cityData from './citydata.js'
-import Breadcrumb from '../breadcrumb'
+
 export default {
-  components: {
-    Breadcrumb
-  },
+
   data() {
     return {
       queryInfo: {

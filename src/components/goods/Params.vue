@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div>
-    <Breadcrumb :data="['商品管理','参数列表']"></Breadcrumb>
+    <brea :data="['商品管理','参数列表']"></brea>
     <!-- 面包屑导航区域 -->
     <!-- 卡片视图 -->
     <el-card>
@@ -184,11 +184,9 @@
 </template>
 
 <script>
-import Breadcrumb from '../breadcrumb'
+
 export default {
-  components: {
-    Breadcrumb
-  },
+
   data() {
     return {
       catelist: [],
