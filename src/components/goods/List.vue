@@ -1,11 +1,7 @@
 <template>
   <div>
     <!-- 面包屑导航区域 -->
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>商品管理</el-breadcrumb-item>
-      <el-breadcrumb-item>商品列表</el-breadcrumb-item>
-    </el-breadcrumb>
+     <Breadcrumb :data="['商品管理','商品列表']"></Breadcrumb>
     <!-- 卡片视图 -->
     <el-card>
       <el-row>
@@ -66,7 +62,11 @@
 </template>
 
 <script>
+import Breadcrumb from '../breadcrumb'
 export default {
+  components: {
+    Breadcrumb
+  },
   data() {
     return {
       goodslist: [],

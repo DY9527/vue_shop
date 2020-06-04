@@ -1,12 +1,9 @@
 <template>
   <div >
     <h3>权限列表组件页面</h3>
+     <Breadcrumb :data="['权限管理','权限列表']"></Breadcrumb>
     <!-- 面包屑导航区域 -->
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>权限管理</el-breadcrumb-item>
-      <el-breadcrumb-item>权限列表</el-breadcrumb-item>
-    </el-breadcrumb>
+
     <!-- 卡片视图 -->
     <el-card>
       <el-table :data="rightsList" border>
@@ -27,9 +24,11 @@
 </template>
 
 <script>
+import Breadcrumb from '../breadcrumb'
 export default {
-  // import引入的组件需要注入到对象中才能使用
-  components: {},
+  components: {
+    Breadcrumb
+  },
   data() {
     // 这里存放数据
     return {

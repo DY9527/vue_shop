@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- 面包屑导航区域 -->
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>商品管理</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '/goods' }">商品列表</el-breadcrumb-item>
-      <el-breadcrumb-item>商品添加</el-breadcrumb-item>
-    </el-breadcrumb>
+    <Breadcrumb :data="['商品管理','商品列表']"></Breadcrumb>
     <el-card>
       <el-alert title="添加商品信息" type="info" center show-icon :closable="false"></el-alert>
       <el-steps :space="200" :active="activeIndex-0" align-center finish-status="success">
@@ -104,7 +99,12 @@
 
 <script>
 import _ from 'lodash'
+
+import Breadcrumb from '../breadcrumb'
 export default {
+  components: {
+    Breadcrumb
+  },
   data() {
     return {
       // 当前进度

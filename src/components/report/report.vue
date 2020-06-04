@@ -1,11 +1,12 @@
 <template>
   <div>
     <!-- 面包屑导航区域 -->
-    <el-breadcrumb separator-class="el-icon-arrow-right">
+     <Breadcrumb :data="['订单管理','订单列表']"></Breadcrumb>
+    <!-- <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>数据统计</el-breadcrumb-item>
       <el-breadcrumb-item>数据量表</el-breadcrumb-item>
-    </el-breadcrumb>
+    </el-breadcrumb> -->
     <el-card class="box-card">
       <div style="width:600px;height:400px" id="main"></div>
     </el-card>
@@ -15,7 +16,11 @@
 <script>
 import echarts from 'echarts'
 import _ from 'lodash'
+import Breadcrumb from '../breadcrumb'
 export default {
+  components: {
+    Breadcrumb
+  },
   data() {
     return {
       option: {

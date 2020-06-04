@@ -1,11 +1,8 @@
 <template>
   <div>
     <!-- 面包屑导航区域 -->
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>订单管理</el-breadcrumb-item>
-      <el-breadcrumb-item>订单列表</el-breadcrumb-item>
-    </el-breadcrumb>
+    <Breadcrumb :data="['订单管理','订单列表']"></Breadcrumb>
+
     <!-- 卡片视图 -->
     <el-card class="box-card">
       <!-- 搜索与添加区域 -->
@@ -109,8 +106,11 @@
 
 <script>
 import cityData from './citydata.js'
+import Breadcrumb from '../breadcrumb'
 export default {
-  components: {},
+  components: {
+    Breadcrumb
+  },
   data() {
     return {
       queryInfo: {
